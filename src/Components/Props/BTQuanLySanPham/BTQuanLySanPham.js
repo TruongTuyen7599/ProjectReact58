@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import GioHang from "./GioHang";
 import SP from './SP'
 
 export default class BTQuanLySanPham extends Component {
@@ -57,8 +58,60 @@ export default class BTQuanLySanPham extends Component {
             "giaBan": 5700000,
             "hinhAnh": "./img/vsphone.jpg"
 
-        }
+        },
+        gioHang: [
+            { maSP: 1, tenSP: "Iphone", hinhAnh: './img/vsphone.jpg', soLuong: 1, giaBan: 1000 }
+        ]
     }
+    themSanPham = (spClick) => {
+        console.log(spClick);
+        //this.setState
+        // Từ sản phẩm được click tạo ra sp giỏ hàng
+        const spGH = { ...spClick, soLuong: 1 };
+        // Thêm sản phẩm vừa click vào this.state.gioHang
+        let gioHangCapNhat = [...this.state.gioHang];
+        // Kiểm tra sản phẩm có trong giỏ hàng chưa
+        let index = gioHangCapNhat.findIndex(sp => sp.maSP === spGH.maSP);
+        if (index !== -1) { // Sản phẩm đã có trong giỏ hàng
+            gioHangCapNhat[index].soLuong += 1;
+        } else { // không tìm thấy sản phẩm click có trong giỏ hàng => thêm vào
+            gioHangCapNhat.push(spGH);
+        }
+        // Cập nhật lại state
+        this.setState({
+            gioHang: gioHangCapNhat,
+        })
+    }
+
+    // State nằm tại component nào thì phương thức xử lí setState xây dựng tại component đó
+    xoaGioHang = (maSP) => {
+        console.log('ma sp', maSP);
+        let gioHangCapNhat = [...this.state.gioHang];
+        let index = gioHangCapNhat.findIndex(spGH => spGH.maSP === maSP);
+        if (index !== -1) {
+            gioHangCapNhat.splice(index, 1);
+        }
+
+        this.setState({
+            gioHang: gioHangCapNhat
+        })
+    }
+
+    tangGiamSoLuong = (maSP, soLuong) => {
+        let gioHangCapNhat = [...this.state.gioHang];
+
+        //tìm sản phẩm trong giỏ hàng
+        let spTangGiamSL = gioHangCapNhat.find(spGH => spGH.maSP === maSP);
+        if (spTangGiamSL) {
+            spTangGiamSL.soLuong += soLuong;
+        }
+
+        //setState giỏ hàng
+        this.setState({
+            gioHang: gioHangCapNhat
+        })
+    }
+
     renderProduct = () => {
 
         return this.dataProduct.map((product, index) => {
@@ -75,6 +128,7 @@ export default class BTQuanLySanPham extends Component {
         let { productDetail } = this.state;
         return (
             <div className="container">
+                <GioHang xoaGioHang={this.xoaGioHang} tangGiamSoLuong={this.tangGiamSoLuong} gioHang={this.state.gioHang} />
                 <h3 className="text-center display-4"> Danh sách sản phẩm</h3>
                 <div className="row">
                     {this.renderProduct()}

@@ -13,6 +13,7 @@ import StyleComponent from "./StyleComponent/StyleComponent";
 
 import BaiTapLayout from './Components/BaiTapLayout/BaiTapLayout';
 import BTQuanLySanPham from "./Components/Props/BTQuanLySanPham/BTQuanLySanPham";
+import GioHang from "./Components/Props/BTQuanLySanPham/GioHang";
 function App() {
   return (
     <div className="App">
@@ -27,6 +28,7 @@ function App() {
       {/* <BaiTapChonXe/> */}
       {/* <RenderWithMap /> */}
       {/* <DemoProps /> */}
+      <GioHang/>
       <BTQuanLySanPham />
     </div >
   );
